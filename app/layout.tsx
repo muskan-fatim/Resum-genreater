@@ -1,5 +1,4 @@
-
- import type { Metadata } from "next";
+import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -23,12 +22,17 @@ export const metadata: Metadata = {
   description: "Resume builder with all the basic functionality",
 };
 
+// Define the LayoutProps type with the required 'types' property
+interface LayoutProps {
+  children: React.ReactNode;
+  types: string; // Assuming types is a string, adjust this type based on your requirements
+}
+
 // RootLayout component
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  types,
+}: Readonly<LayoutProps>) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
