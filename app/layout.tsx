@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 // Define the LayoutProps type with the required 'types' property
 interface LayoutProps {
   children: React.ReactNode;
-  types: string; // Assuming types is a string, adjust this type based on your requirements
+  types?: string; // Assuming types is a string, adjust this type based on your requirements
 }
 
 // RootLayout component
