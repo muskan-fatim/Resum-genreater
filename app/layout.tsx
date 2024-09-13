@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { ReactNode } from 'react';
+import { LayoutProps as NextLayoutProps } from 'next'; // Import the required type from Next.js
+import localFont from 'next/font/local';
 import "./globals.css";
 
 // Define the geistSans font
@@ -17,14 +18,14 @@ const geistMono = localFont({
 });
 
 // Metadata for the page
-export const metadata: Metadata = {
+export const metadata = {
   title: "Resume Builder",
   description: "Resume builder with all the basic functionality",
 };
 
-// RootLayout component
-interface LayoutProps {
-  children: React.ReactNode;
+// RootLayout component type
+interface LayoutProps extends NextLayoutProps { // Extend the LayoutProps from Next.js
+  children: ReactNode;
 }
 
 // RootLayout component
