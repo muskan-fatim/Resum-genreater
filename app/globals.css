@@ -1,0 +1,7 @@
+:root {
+  --font-geist-sans: 'Geist Sans', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+}
+body {
+  font-family: var(--font-geist-sans);
+}
