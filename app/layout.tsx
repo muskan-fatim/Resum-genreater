@@ -22,17 +22,13 @@ export const metadata: Metadata = {
   description: "Resume builder with all the basic functionality",
 };
 
-// Define the LayoutProps type with the required 'types' property
+// RootLayout component
 interface LayoutProps {
   children: React.ReactNode;
-  types?: string; // Assuming types is a string, adjust this type based on your requirements
 }
 
 // RootLayout component
-export default function RootLayout({
-  children,
-  types,
-}: Readonly<LayoutProps>) {
+export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
