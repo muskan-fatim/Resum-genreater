@@ -1,22 +1,21 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+import React from 'react';
+import Head from 'next/head';
 
-export const metadata: Metadata = {
-  title: "Weather Widget",
-  description: "A widget to display the current weather of a location.",
+export const metadata = {
+  title: 'Resume Generator',
+  description: 'A tool to create, edit, and generate resumes dynamically.',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <>
+      <Head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+      {children}
+    </>
   );
 }
