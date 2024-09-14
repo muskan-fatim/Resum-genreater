@@ -1,6 +1,4 @@
-// app/layout.tsx
 
-import './globals.css'; // Assuming you have a global CSS file for shared styles
 import { ReactNode } from 'react';
 
 // Define metadata (title, description, etc.)
