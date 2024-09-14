@@ -1,32 +1,29 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
+// app/layout.tsx
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import './globals.css'; // Assuming you have a global CSS file for shared styles
+import { ReactNode } from 'react';
 
-export const metadata: Metadata = {
-  title: "Resume Builder ",
-  description: "resume builder with all the basic functinalty",
+// Define metadata (title, description, etc.)
+export const metadata = {
+  title: 'Resume Builder',
+  description: 'A simple Next.js-based resume builder application',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+type LayoutProps = {
+  children: ReactNode;
+};
+
+export default function Layout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+      <body>
+        <header>
+        
+        </header>
+        <main>{children}</main>
+        <footer>
+          <p>&copy; 2024 Resume Builder. All rights reserved.</p>
+        </footer>
       </body>
     </html>
   );

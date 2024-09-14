@@ -1,6 +1,8 @@
-'use client';
-import { useState } from 'react';
-import html2pdf from 'html2pdf.js'; // Ensure this library is installed
+'use client'
+import { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import styles from './page.module.css'
 
 type ResumeData = {
   name: string;
@@ -28,59 +30,48 @@ export default function ResumeBuilder() {
   });
 
   const [isResumeGenerated, setIsResumeGenerated] = useState(false);
-  const [uniqueUrl, setUniqueUrl] = useState<string | null>(null);
+  const resumeRef = useRef<HTMLDivElement>(null);
 
-  // Handling form input change
   const handleInputChange = (field: keyof ResumeData, value: string) => {
     setResumeData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Generate the resume from form input and create a unique URL
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsResumeGenerated(true);
-    const generatedUrl = `${window.location.origin}/${resumeData.name.toLowerCase().replace(/\s+/g, '-')}`;
-    setUniqueUrl(generatedUrl);
   };
 
-  // Allow editing of each section in the resume
   const handleEditClick = (field: keyof ResumeData) => {
     setIsEditing((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  // Function to copy the unique URL to clipboard
-  const handleCopyLink = () => {
-    if (uniqueUrl) {
-      navigator.clipboard.writeText(uniqueUrl);
-      alert('Link copied to clipboard!');
+  const handleDownloadPDF = async () => {
+    const resumeElement = resumeRef.current;
+    if (resumeElement) {
+      const canvas = await html2canvas(resumeElement);
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0, 210, 297); // Adjust sizing as needed
+      pdf.save('resume.pdf');
     }
   };
 
-  // Function to download the resume as a PDF
-  const handleDownloadPDF = () => {
-    const element = document.getElementById('resume');
-    if (element) {
-      html2pdf()
-        .from(element)
-        .set({
-          margin: 1,
-          filename: `${resumeData.name.replace(/\s+/g, '_')}_Resume.pdf`,
-          html2canvas: { scale: 2 },
-          jsPDF: { orientation: 'portrait' },
-        })
-        .save();
-    }
+  const handleCopyLink = () => {
+    const resumeLink = window.location.href; // Assuming the page is hosted on Vercel
+    navigator.clipboard.writeText(resumeLink).then(() => {
+      alert('Resume link copied to clipboard!');
+    });
   };
 
   return (
-    <div className="resume-builder-container">
-      <h1>Resume Builder</h1>
+    <div className={styles.resumecontainer}>
+      <h1 className={styles.h1}>Resume Builder</h1>
 
       {!isResumeGenerated ? (
-        <form onSubmit={handleFormSubmit} className="resume-form">
-          <div className="form-group">
+        <form onSubmit={handleFormSubmit} className={styles.resumeform}>
+          <div className={styles.formgroup}>
             <label htmlFor="name">Name</label>
-            <input
+            <input className={styles.input}
               type="text"
               id="name"
               value={resumeData.name}
@@ -89,9 +80,9 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formgroup}>
             <label htmlFor="email">Email</label>
-            <input
+            <input className={styles.input}
               type="email"
               id="email"
               value={resumeData.email}
@@ -100,9 +91,9 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formgroup}>
             <label htmlFor="education">Education</label>
-            <input
+            <input className={styles.input}
               type="text"
               id="education"
               value={resumeData.education}
@@ -111,9 +102,9 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formgroup}>
             <label htmlFor="experience">Experience</label>
-            <input
+            <input className={styles.input}
               type="text"
               id="experience"
               value={resumeData.experience}
@@ -122,9 +113,9 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formgroup}>
             <label htmlFor="skills">Skills</label>
-            <input
+            <input className={styles.input}
               type="text"
               id="skills"
               value={resumeData.skills}
@@ -133,16 +124,17 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <button type="submit" className="generate-btn">Generate Resume</button>
+          <button type="submit" className={styles.generatebtn}>Generate Resume</button>
         </form>
       ) : (
         <>
-          <div className="resume-container" id="resume">
-            <h2>Your Resume</h2>
-            <div className="resume-section">
+          <div ref={resumeRef} className={styles.resumecontainer2}>
+            <h2 className={styles.h2}> Your Resume</h2>
+
+            <div className={styles.resumesection}>
               <h3>Name:</h3>
               {isEditing.name ? (
-                <input
+                <input className={styles.input}
                   type="text"
                   value={resumeData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
@@ -153,10 +145,10 @@ export default function ResumeBuilder() {
               )}
             </div>
 
-            <div className="resume-section">
+            <div className={styles.resumesection}>
               <h3>Email:</h3>
               {isEditing.email ? (
-                <input
+                <input className={styles.input}
                   type="email"
                   value={resumeData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
@@ -167,10 +159,10 @@ export default function ResumeBuilder() {
               )}
             </div>
 
-            <div className="resume-section">
+            <div className={styles.resumesection}>
               <h3>Education:</h3>
               {isEditing.education ? (
-                <input
+                <input className={styles.input}
                   type="text"
                   value={resumeData.education}
                   onChange={(e) => handleInputChange('education', e.target.value)}
@@ -181,10 +173,10 @@ export default function ResumeBuilder() {
               )}
             </div>
 
-            <div className="resume-section">
+            <div className={styles.resumesection}>
               <h3>Experience:</h3>
               {isEditing.experience ? (
-                <input
+                <input className={styles.input}
                   type="text"
                   value={resumeData.experience}
                   onChange={(e) => handleInputChange('experience', e.target.value)}
@@ -195,10 +187,10 @@ export default function ResumeBuilder() {
               )}
             </div>
 
-            <div className="resume-section">
+            <div className={styles.resumesection}>
               <h3>Skills:</h3>
               {isEditing.skills ? (
-                <input
+                <input className={styles.input}
                   type="text"
                   value={resumeData.skills}
                   onChange={(e) => handleInputChange('skills', e.target.value)}
@@ -209,92 +201,20 @@ export default function ResumeBuilder() {
               )}
             </div>
           </div>
-      
-          <div className="resume-actions">
-            {uniqueUrl && (
-              <>
-                <p>Shareable Link: <a href={uniqueUrl} target="_blank" rel="noopener noreferrer">{uniqueUrl}</a></p>
-                <button onClick={handleCopyLink} className="action-btn">Copy Link</button>
-                <button onClick={handleDownloadPDF} className="action-btn">Download PDF</button>
-              </>
-            )}
+
+          <div className={styles.resumeactions}>
+            <button onClick={handleDownloadPDF} className={styles.actionbtn}>
+              Download PDF
+            </button>
+            <button onClick={handleCopyLink} className={styles.actionbtn}>
+              Copy Resume Link
+            </button>
+            <button onClick={() => setIsResumeGenerated(false)} className={styles.actionbtn}>
+              Edit Resume
+            </button>
           </div>
         </>
       )}
-
-      <style jsx>{`
-        .resume-builder-container {
-          max-width: 600px;
-          margin: 0 auto;
-          padding: 20px;
-          font-family: Arial, sans-serif;
-        }
-
-        .resume-form {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .form-group {
-          margin-bottom: 15px;
-        }
-
-        .form-group label {
-          display: block;
-          margin-bottom: 5px;
-        }
-
-        .form-group input {
-          width: 100%;
-          padding: 8px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-        }
-
-        .generate-btn {
-          padding: 10px 20px;
-          background-color: #0070f3;
-          color: white;
-          border: none;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 1rem;
-        }
-
-        .generate-btn:hover {
-          background-color: #005bb5;
-        }
-
-        .resume-container {
-          border: 1px solid #ddd;
-          padding: 20px;
-          border-radius: 8px;
-          background-color: grey;
-        }
-
-        .resume-section {
-          margin-bottom: 15px;
-        }
-
-        .resume-section h3 {
-          margin: 0;
-        }
-
-        .resume-section p {
-          cursor: pointer;
-        }
-
-        .resume-actions {
-          margin-top: 20px;
-          display: flex;
-          gap: 15px;
-        }
-
-        .action-btn {
-          padding: 10px 20px;
-          background-color: #0070f3;
-          color: white;
-          border: none
-      `}</style>
-      </div>
-      )}
+    </div>
+  );
+}
