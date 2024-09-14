@@ -1,3 +1,6 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript", "custom-rules"],
+  "rules": {
+    "custom-rule": "error"
+  }
 }
