@@ -18,30 +18,7 @@ This project is an **Editable Resume Builder** developed with **Next.js**, **Typ
 - **Next.js**: For server-side rendering and static site generation.
 - **TypeScript**: Adds static typing for better development workflow.
 - **CSS**: For the styling and layout of the resume and form components.
-- **localStorage**: Used for temporarily storing user input for easy editing and preview.
 
-## Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/Resum.git
-   cd Resum
-   ```
-
-2. Install the dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-   Visit [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 
 ## How to Use
 
@@ -57,11 +34,3 @@ This project is an **Editable Resume Builder** developed with **Next.js**, **Typ
 
 4. **Share Your Resume**:
    - Use the **Copy URL** feature to generate a shareable link to your resume, which can be shared with others for easy access online.
-
-## Contribution
-
-Contributions are welcome! If you have ideas to improve this project, feel free to submit an issue or a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
