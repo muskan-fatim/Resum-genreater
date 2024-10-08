@@ -1,32 +1,112 @@
-.resumecontainer {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 40px;
-    background-color: #fefefe;
-    border-radius: 12px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-    font-family: 'Poppins', sans-serif;
+
+
+.resumecontainer2 {
+  padding: 40px;
+  margin: 20px auto;
+  max-width: 800px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #ffffff, #f0f0f0);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  color: #333333;
+}
+
+.resumecontainer2 h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2em;
+  color: #4CAF50;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+
+.resumesection {
+  margin-bottom: 25px;
+}
+
+.resumesection h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2em;
+  color: #4CAF50;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #4CAF50;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.resumesection p,
+.resumesection input {
+  font-size: 1em;
+  line-height: 1.6;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.resumesection p {
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.resumesection p:hover {
+  background-color: #e8f5e9;
+}
+
+.resumesection input {
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.resumesection input:focus {
+  outline: none;
+  border: 2px solid #4CAF50;
+}
+
+.resumeactions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.actionbtn {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.actionbtn:hover {
+  background-color: #43a047;
+  transform: translateY(-2px);
+}
+
+.actionbtn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .resumecontainer2 {
+    padding: 20px;
+    margin: 10px;
   }
 
-  .h1, .h2 {
-    text-align: center;
-    color: #333;
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-size: 2.5rem;
+  .resumecontainer2 h2 {
+    font-size: 1.5em;
   }
 
-  .resumeform {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 40px;
+  .resumesection h3 {
+    font-size: 1em;
   }
 
-  .formgroup {
-    display: flex;
-    flex-direction: column;
-  }
+
+
 
   .label {
     font-weight: 600;
