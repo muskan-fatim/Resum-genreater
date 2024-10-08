@@ -91,11 +91,6 @@
   transform: translateY(0);
 }
 
-@media (max-width: 600px) {
-  .resumecontainer2 {
-    padding: 20px;
-    margin: 10px;
-  }
 
   .resumecontainer2 h2 {
     font-size: 1.5em;
