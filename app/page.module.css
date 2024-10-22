@@ -102,6 +102,8 @@
 .resumesection input {
   background-color: #ffffff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+
 }
 
 .resumesection input:focus {
@@ -162,6 +164,8 @@
     border: 1px solid #ddd;
     box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
     transition: border-color 0.2s ease;
+      box-sizing: border-box;
+
   }
 
   .input:focus {
