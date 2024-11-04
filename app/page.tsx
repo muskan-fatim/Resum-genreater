@@ -131,7 +131,7 @@ export default function ResumeBuilder() {
           </div>
 
           <div className={styles.colorPicker}>
-            <label htmlFor="bgColor">Choose Background Color:</label>
+            <label htmlFor="bgColor">Choose Background Color for resume :</label>
             <input
               type="color"
               id="bgColor"
