@@ -2,7 +2,7 @@
 import { useState, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import styles from './page.module.css'
+import styles from './page.module.css';
 
 type ResumeData = {
   name: string;
@@ -30,6 +30,7 @@ export default function ResumeBuilder() {
   });
 
   const [isResumeGenerated, setIsResumeGenerated] = useState(false);
+  const [bgColor, setBgColor] = useState('#ffffff'); // Background color state
   const resumeRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (field: keyof ResumeData, value: string) => {
@@ -64,14 +65,15 @@ export default function ResumeBuilder() {
   };
 
   return (
-    <div className={styles.resumecontainer}>
+    <div className={styles.resumeContainer}>
       <h1 className={styles.h1}>Resume Builder</h1>
 
       {!isResumeGenerated ? (
-        <form onSubmit={handleFormSubmit} className={styles.resumeform}>
-          <div className={styles.formgroup}>
+        <form onSubmit={handleFormSubmit} className={styles.resumeForm}>
+          <div className={styles.formGroup}>
             <label htmlFor="name">Name</label>
-            <input className={styles.input}
+            <input
+              className={styles.input}
               type="text"
               id="name"
               value={resumeData.name}
@@ -80,9 +82,10 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <div className={styles.formgroup}>
+          <div className={styles.formGroup}>
             <label htmlFor="email">Email</label>
-            <input className={styles.input}
+            <input
+              className={styles.input}
               type="email"
               id="email"
               value={resumeData.email}
@@ -91,9 +94,10 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <div className={styles.formgroup}>
+          <div className={styles.formGroup}>
             <label htmlFor="education">Education</label>
-            <input className={styles.input}
+            <input
+              className={styles.input}
               type="text"
               id="education"
               value={resumeData.education}
@@ -102,9 +106,10 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <div className={styles.formgroup}>
+          <div className={styles.formGroup}>
             <label htmlFor="experience">Experience</label>
-            <input className={styles.input}
+            <input
+              className={styles.input}
               type="text"
               id="experience"
               value={resumeData.experience}
@@ -113,9 +118,10 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <div className={styles.formgroup}>
+          <div className={styles.formGroup}>
             <label htmlFor="skills">Skills</label>
-            <input className={styles.input}
+            <input
+              className={styles.input}
               type="text"
               id="skills"
               value={resumeData.skills}
@@ -124,17 +130,28 @@ export default function ResumeBuilder() {
             />
           </div>
 
-          <button type="submit" className={styles.generatebtn}>Generate Resume</button>
+          <div className={styles.colorPicker}>
+            <label htmlFor="bgColor">Choose Background Color:</label>
+            <input
+              type="color"
+              id="bgColor"
+              value={bgColor}
+              onChange={(e) => setBgColor(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className={styles.generateBtn}>Generate Resume</button>
         </form>
       ) : (
         <>
-          <div ref={resumeRef} className={styles.resumecontainer2}>
-            <h2 className={styles.h2}> Your Resume</h2>
+          <div ref={resumeRef} className={styles.resumeContainer2} style={{ backgroundColor: bgColor }}>
+            <h2 className={styles.h2}>Your Resume</h2>
 
-            <div className={styles.resumesection}>
+            <div className={styles.resumeSection}>
               <h3>Name:</h3>
               {isEditing.name ? (
-                <input className={styles.input}
+                <input
+                  className={styles.input}
                   type="text"
                   value={resumeData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
@@ -145,10 +162,11 @@ export default function ResumeBuilder() {
               )}
             </div>
 
-            <div className={styles.resumesection}>
+            <div className={styles.resumeSection}>
               <h3>Email:</h3>
               {isEditing.email ? (
-                <input className={styles.input}
+                <input
+                  className={styles.input}
                   type="email"
                   value={resumeData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
@@ -159,10 +177,11 @@ export default function ResumeBuilder() {
               )}
             </div>
 
-            <div className={styles.resumesection}>
+            <div className={styles.resumeSection}>
               <h3>Education:</h3>
               {isEditing.education ? (
-                <input className={styles.input}
+                <input
+                  className={styles.input}
                   type="text"
                   value={resumeData.education}
                   onChange={(e) => handleInputChange('education', e.target.value)}
@@ -173,10 +192,11 @@ export default function ResumeBuilder() {
               )}
             </div>
 
-            <div className={styles.resumesection}>
+            <div className={styles.resumeSection}>
               <h3>Experience:</h3>
               {isEditing.experience ? (
-                <input className={styles.input}
+                <input
+                  className={styles.input}
                   type="text"
                   value={resumeData.experience}
                   onChange={(e) => handleInputChange('experience', e.target.value)}
@@ -187,10 +207,11 @@ export default function ResumeBuilder() {
               )}
             </div>
 
-            <div className={styles.resumesection}>
+            <div className={styles.resumeSection}>
               <h3>Skills:</h3>
               {isEditing.skills ? (
-                <input className={styles.input}
+                <input
+                  className={styles.input}
                   type="text"
                   value={resumeData.skills}
                   onChange={(e) => handleInputChange('skills', e.target.value)}
@@ -202,14 +223,14 @@ export default function ResumeBuilder() {
             </div>
           </div>
 
-          <div className={styles.resumeactions}>
-            <button onClick={handleDownloadPDF} className={styles.actionbtn}>
+          <div className={styles.resumeActions}>
+            <button onClick={handleDownloadPDF} className={styles.actionBtn}>
               Download PDF
             </button>
-            <button onClick={handleCopyLink} className={styles.actionbtn}>
+            <button onClick={handleCopyLink} className={styles.actionBtn}>
               Copy Resume Link
             </button>
-            <button onClick={() => setIsResumeGenerated(false)} className={styles.actionbtn}>
+            <button onClick={() => setIsResumeGenerated(false)} className={styles.actionBtn}>
               Edit Resume
             </button>
           </div>
