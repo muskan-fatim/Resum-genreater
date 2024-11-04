@@ -1,209 +1,241 @@
-.resumecontainer{
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
+'use client'
+import { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import styles from './page.module.css';
+
+type ResumeData = {
+  name: string;
+  email: string;
+  education: string;
+  experience: string;
+  skills: string;
+};
+
+export default function ResumeBuilder() {
+  const [isEditing, setIsEditing] = useState({
+    name: false,
+    email: false,
+    education: false,
+    experience: false,
+    skills: false,
+  });
+
+  const [resumeData, setResumeData] = useState<ResumeData>({
+    name: '',
+    email: '',
+    education: '',
+    experience: '',
+    skills: '',
+  });
+
+  const [isResumeGenerated, setIsResumeGenerated] = useState(false);
+  const [bgColor, setBgColor] = useState('#ffffff'); // Background color state
+  const resumeRef = useRef<HTMLDivElement>(null);
+
+  const handleInputChange = (field: keyof ResumeData, value: string) => {
+    setResumeData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsResumeGenerated(true);
+  };
+
+  const handleEditClick = (field: keyof ResumeData) => {
+    setIsEditing((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const handleDownloadPDF = async () => {
+    const resumeElement = resumeRef.current;
+    if (resumeElement) {
+      const canvas = await html2canvas(resumeElement);
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0, 210, 297); // Adjust sizing as needed
+      pdf.save('resume.pdf');
+    }
+  };
+
+  const handleCopyLink = () => {
+    const resumeLink = window.location.href; // Assuming the page is hosted on Vercel
+    navigator.clipboard.writeText(resumeLink).then(() => {
+      alert('Resume link copied to clipboard!');
+    });
+  };
+
+  return (
+    <div className={styles.resumeContainer}>
+      <h1 className={styles.h1}>Resume Builder</h1>
+
+      {!isResumeGenerated ? (
+        <form onSubmit={handleFormSubmit} className={styles.resumeForm}>
+          <div className={styles.formGroup}>
+            <label htmlFor="name">Name</label>
+            <input
+              className={styles.input}
+              type="text"
+              id="name"
+              value={resumeData.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Email</label>
+            <input
+              className={styles.input}
+              type="email"
+              id="email"
+              value={resumeData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="education">Education</label>
+            <input
+              className={styles.input}
+              type="text"
+              id="education"
+              value={resumeData.education}
+              onChange={(e) => handleInputChange('education', e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="experience">Experience</label>
+            <input
+              className={styles.input}
+              type="text"
+              id="experience"
+              value={resumeData.experience}
+              onChange={(e) => handleInputChange('experience', e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="skills">Skills</label>
+            <input
+              className={styles.input}
+              type="text"
+              id="skills"
+              value={resumeData.skills}
+              onChange={(e) => handleInputChange('skills', e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.colorPicker}>
+            <label htmlFor="bgColor">Choose Background Color:</label>
+            <input
+              type="color"
+              id="bgColor"
+              value={bgColor}
+              onChange={(e) => setBgColor(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className={styles.generateBtn}>Generate Resume</button>
+        </form>
+      ) : (
+        <>
+          <div ref={resumeRef} className={styles.resumeContainer2} style={{ backgroundColor: bgColor }}>
+            <h2 className={styles.h2}>Your Resume</h2>
+
+            <div className={styles.resumeSection}>
+              <h3>Name:</h3>
+              {isEditing.name ? (
+                <input
+                  className={styles.input}
+                  type="text"
+                  value={resumeData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  onBlur={() => handleEditClick('name')}
+                />
+              ) : (
+                <p onClick={() => handleEditClick('name')}>{resumeData.name}</p>
+              )}
+            </div>
+
+            <div className={styles.resumeSection}>
+              <h3>Email:</h3>
+              {isEditing.email ? (
+                <input
+                  className={styles.input}
+                  type="email"
+                  value={resumeData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  onBlur={() => handleEditClick('email')}
+                />
+              ) : (
+                <p onClick={() => handleEditClick('email')}>{resumeData.email}</p>
+              )}
+            </div>
+
+            <div className={styles.resumeSection}>
+              <h3>Education:</h3>
+              {isEditing.education ? (
+                <input
+                  className={styles.input}
+                  type="text"
+                  value={resumeData.education}
+                  onChange={(e) => handleInputChange('education', e.target.value)}
+                  onBlur={() => handleEditClick('education')}
+                />
+              ) : (
+                <p onClick={() => handleEditClick('education')}>{resumeData.education}</p>
+              )}
+            </div>
+
+            <div className={styles.resumeSection}>
+              <h3>Experience:</h3>
+              {isEditing.experience ? (
+                <input
+                  className={styles.input}
+                  type="text"
+                  value={resumeData.experience}
+                  onChange={(e) => handleInputChange('experience', e.target.value)}
+                  onBlur={() => handleEditClick('experience')}
+                />
+              ) : (
+                <p onClick={() => handleEditClick('experience')}>{resumeData.experience}</p>
+              )}
+            </div>
+
+            <div className={styles.resumeSection}>
+              <h3>Skills:</h3>
+              {isEditing.skills ? (
+                <input
+                  className={styles.input}
+                  type="text"
+                  value={resumeData.skills}
+                  onChange={(e) => handleInputChange('skills', e.target.value)}
+                  onBlur={() => handleEditClick('skills')}
+                />
+              ) : (
+                <p onClick={() => handleEditClick('skills')}>{resumeData.skills}</p>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.resumeActions}>
+            <button onClick={handleDownloadPDF} className={styles.actionBtn}>
+              Download PDF
+            </button>
+            <button onClick={handleCopyLink} className={styles.actionBtn}>
+              Copy Resume Link
+            </button>
+            <button onClick={() => setIsResumeGenerated(false)} className={styles.actionBtn}>
+              Edit Resume
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
-
-.h1 {
-  text-align: center;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2rem;
-  color: #333333;
-  margin-bottom: 20px;
-}
-
-.resumeform .formgroup {
-  margin-bottom: 20px;
-}
-
-.resumeform label {
-  font-size: 1.1rem;
-  color: #333;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.resumeform .input {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s;
-}
-
-.resumeform .input:focus {
-  border-color: #007BFF;
-  outline: none;
-}
-
-
-
-.resumecontainer2 {
-  padding: 40px;
-  margin: 20px auto;
-  max-width: 800px;
-  border-radius: 15px;
-  background: linear-gradient(135deg, #ffffff, #f0f0f0);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  color: #333333;
-}
-
-.resumecontainer2 h2 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2em;
-  color: #4CAF50;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-
-.resumesection {
-  margin-bottom: 25px;
-}
-
-.resumesection h3 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.2em;
-  color: #4CAF50;
-  margin-bottom: 8px;
-  border-bottom: 2px solid #4CAF50;
-  display: inline-block;
-  padding-bottom: 5px;
-}
-
-.resumesection p,
-.resumesection input {
-  font-size: 1em;
-  line-height: 1.6;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.resumesection p {
-  background-color: #f9f9f9;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.resumesection p:hover {
-  background-color: #e8f5e9;
-}
-
-.resumesection input {
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-
-}
-
-.resumesection input:focus {
-  outline: none;
-  border: 2px solid #4CAF50;
-}
-
-.resumeactions {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
-}
-
-.actionbtn {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: #ffffff;
-  border: none;
-  border-radius: 25px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.actionbtn:hover {
-  background-color: #43a047;
-  transform: translateY(-2px);
-}
-
-.actionbtn:active {
-  transform: translateY(0);
-}
-
-
-  .resumecontainer2 h2 {
-    font-size: 1.5em;
-  }
-
-  .resumesection h3 {
-    font-size: 1em;
-  }
-
-
-
-
-  .label {
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 8px;
-    color: #555;
-  }
-
-  .input {
-    padding: 12px 15px;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
-    transition: border-color 0.2s ease;
-      box-sizing: border-box;
-
-  }
-
-  .input:focus {
-    border-color: #0070f3;
-    outline: none;
-  }
-
-  .generatebtn {
-    padding: 15px;
-    background-color: #0070f3;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 12px rgba(0, 112, 243, 0.3);
-  }
-
-  .generatebtn:hover {
-    background-color: #005bb5;
-  }
-
-  .resumecontainer2 {
-    padding: 30px;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    background-color: rgb(60, 182, 60);
-  }
-  .actionbtn{
-    background-color: white;
-    color: rgb(60, 182, 60);
-    border-radius: 10px;
-    margin: 20px 20px;
-    padding: 10px;
-  }
-  .actionbtn:hover{
-    background-color: rgb(60, 182, 60);
-    color: white;
-  }
-  
