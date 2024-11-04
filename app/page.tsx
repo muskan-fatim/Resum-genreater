@@ -1,8 +1,9 @@
 'use client'
 import { useState, useRef } from 'react';
+import styles from './page.module.css';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import styles from './page.module.css';
+
 
 type ResumeData = {
   name: string;
@@ -66,10 +67,8 @@ export default function ResumeBuilder() {
 
   return (
     <div className={styles.resumeContainer}>
-      <h1 className={styles.h1}>Resume Builder</h1>
-
       {!isResumeGenerated ? (
-        <form onSubmit={handleFormSubmit} className={styles.resumeForm}>
+        <form onSubmit={handleFormSubmit} className={styles.formContent}>
           <div className={styles.formGroup}>
             <label htmlFor="name">Name</label>
             <input
@@ -131,7 +130,7 @@ export default function ResumeBuilder() {
           </div>
 
           <div className={styles.colorPicker}>
-            <label htmlFor="bgColor">Choose Background Color for resume :</label>
+            <label htmlFor="bgColor">Choose Background Color for Resume:</label>
             <input
               type="color"
               id="bgColor"
@@ -144,82 +143,84 @@ export default function ResumeBuilder() {
         </form>
       ) : (
         <>
-          <div ref={resumeRef} className={styles.resumeContainer2} style={{ backgroundColor: bgColor }}>
-            <h2 className={styles.h2}>Your Resume</h2>
-
-            <div className={styles.resumeSection}>
-              <h3>Name:</h3>
-              {isEditing.name ? (
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={resumeData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  onBlur={() => handleEditClick('name')}
-                />
-              ) : (
-                <p onClick={() => handleEditClick('name')}>{resumeData.name}</p>
-              )}
+          <div ref={resumeRef} className={styles.resumeContent} style={{ backgroundColor: bgColor }}>
+            <div className={styles.sidebar}>
             </div>
+            <div className={styles.mainContent}>
+              <div className={styles.resumeSection}>
+                <h3>Name:</h3>
+                {isEditing.name ? (
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={resumeData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    onBlur={() => handleEditClick('name')}
+                  />
+                ) : (
+                  <p onClick={() => handleEditClick('name')}>{resumeData.name}</p>
+                )}
+              </div>
 
-            <div className={styles.resumeSection}>
-              <h3>Email:</h3>
-              {isEditing.email ? (
-                <input
-                  className={styles.input}
-                  type="email"
-                  value={resumeData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  onBlur={() => handleEditClick('email')}
-                />
-              ) : (
-                <p onClick={() => handleEditClick('email')}>{resumeData.email}</p>
-              )}
-            </div>
+              <div className={styles.resumeSection}>
+                <h3>Email:</h3>
+                {isEditing.email ? (
+                  <input
+                    className={styles.input}
+                    type="email"
+                    value={resumeData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    onBlur={() => handleEditClick('email')}
+                  />
+                ) : (
+                  <p onClick={() => handleEditClick('email')}>{resumeData.email}</p>
+                )}
+              </div>
 
-            <div className={styles.resumeSection}>
-              <h3>Education:</h3>
-              {isEditing.education ? (
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={resumeData.education}
-                  onChange={(e) => handleInputChange('education', e.target.value)}
-                  onBlur={() => handleEditClick('education')}
-                />
-              ) : (
-                <p onClick={() => handleEditClick('education')}>{resumeData.education}</p>
-              )}
-            </div>
+              <div className={styles.resumeSection}>
+                <h3>Education:</h3>
+                {isEditing.education ? (
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={resumeData.education}
+                    onChange={(e) => handleInputChange('education', e.target.value)}
+                    onBlur={() => handleEditClick('education')}
+                  />
+                ) : (
+                  <p onClick={() => handleEditClick('education')}>{resumeData.education}</p>
+                )}
+              </div>
 
-            <div className={styles.resumeSection}>
-              <h3>Experience:</h3>
-              {isEditing.experience ? (
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={resumeData.experience}
-                  onChange={(e) => handleInputChange('experience', e.target.value)}
-                  onBlur={() => handleEditClick('experience')}
-                />
-              ) : (
-                <p onClick={() => handleEditClick('experience')}>{resumeData.experience}</p>
-              )}
-            </div>
+              <div className={styles.resumeSection}>
+                <h3>Experience:</h3>
+                {isEditing.experience ? (
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={resumeData.experience}
+                    onChange={(e) => handleInputChange('experience', e.target.value)}
+                    onBlur={() => handleEditClick('experience')}
+                  />
+                ) : (
+                  <p onClick={() => handleEditClick('experience')}>{resumeData.experience}</p>
+                )}
+              </div>
 
-            <div className={styles.resumeSection}>
-              <h3>Skills:</h3>
-              {isEditing.skills ? (
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={resumeData.skills}
-                  onChange={(e) => handleInputChange('skills', e.target.value)}
-                  onBlur={() => handleEditClick('skills')}
-                />
-              ) : (
-                <p onClick={() => handleEditClick('skills')}>{resumeData.skills}</p>
-              )}
+              <div className={styles.resumeSection}>
+                <h3>Skills:</h3>
+                {isEditing.skills ? (
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={resumeData.skills}
+                    onChange={(e) => handleInputChange('skills', e.target.value)}
+                    onBlur={() => handleEditClick('skills')}
+                  />
+                ) : (
+                  <p onClick={() => handleEditClick('skills')}>{resumeData.skills}</p>
+                )}
+              </div>
             </div>
           </div>
 
